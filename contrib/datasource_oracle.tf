@@ -1,3 +1,6 @@
+#################
+# Create a User and Role
+#################
 resource "sdm_account" "john" {
   user {
     first_name = "John"
@@ -13,6 +16,10 @@ resource "sdm_account_attachment" "john_terraform" {
 resource "sdm_role" "terraform" {
   name = "Terraform Role"
 }
+
+#################
+# Create Oracle 19 DB
+#################
 resource "aws_db_instance" "rds" {
   engine                      = "Oracle-ee"
   publicly_accessible         = true
@@ -22,6 +29,10 @@ resource "aws_db_instance" "rds" {
   db_subnet_group_name        = aws_db_subnet_group.rds.name
   vpc_security_group_ids      = [aws_security_group.rds.id]
 }
+
+#################
+# Add Oracle DB to strongDM
+#################
 resource "sdm_resource" "oracle" {
   oracle {
     name          = "Oracle_19_RDS_instance"
@@ -33,7 +44,12 @@ resource "sdm_resource" "oracle" {
     tls_required  = false
   }
 }
+
+#################
+# Grant datasource access to role
+#################
 resource "sdm_role_grant" "oracle" {
   role_id     = sdm_role.terraform.id
   resource_id = sdm_resource.oracle.0.id
 }
+

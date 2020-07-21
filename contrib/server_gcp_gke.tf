@@ -74,9 +74,11 @@ provider "kubernetes" {
   load_config_file = false
 
   host                   = "https://${google_container_cluster.k8s_class_gke.endpoint}"
+
   client_certificate     = base64decode(google_container_cluster.k8s_class_gke.master_auth.0.client_certificate)
   client_key             = base64decode(google_container_cluster.k8s_class_gke.master_auth.0.client_key)
   cluster_ca_certificate = base64decode(google_container_cluster.k8s_class_gke.master_auth.0.cluster_ca_certificate)
+
   username = google_container_cluster.k8s_class_gke.master_auth.0.username
   password = google_container_cluster.k8s_class_gke.master_auth.0.password
 }
@@ -108,10 +110,10 @@ resource "sdm_resource" "k8s_class_gke" {
     endpoint = google_container_cluster.k8s_class_gke.endpoint 
     
     certificate_authority          = base64decode(google_container_cluster.k8s_class_gke.master_auth.0.cluster_ca_certificate)
-    certificate_authority_filename = "random_sting_ca"
+    certificate_authority_filename = "random_string_ca"
 
     service_account_key          = base64decode(google_service_account_key.k8s_class_gke.private_key) 
-    service_account_key_filename = "random_sting_sak"
+    service_account_key_filename = "random_string_sak"
 
     # healthcheck_namespace = "default"
   }
@@ -121,6 +123,9 @@ resource "sdm_role_grant" "k8s_class_gke" {
   resource_id = sdm_resource.k8s_class_gke.id
 }
 
+#################
+# Create strongDM gateway in GKE cluster
+#################
 module "aws_gke_sdm_gateway" {
   source = "github.com/peteroneilljr/terraform_aws_eks_strongdm_gateways"
 

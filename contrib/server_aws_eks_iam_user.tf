@@ -1,6 +1,10 @@
 # #################
 # # Register EKS with a user specified in configmap/aws-auth
 # #################
+
+#################
+# Create EKS cluster
+#################
 module "eks" {
   source          = "terraform-aws-modules/eks/aws"
   cluster_name    = var.eks_cluster_name
@@ -20,9 +24,10 @@ module "eks" {
     }
   ]
 }
-data "aws_eks_cluster" "cluster" {
-  name = module.eks.cluster_id
-}
+
+#################
+# Create AWS user, this is how strongDM access will access the cluster and inherit cluster permissions.
+#################
 resource "aws_iam_user" "eks_user" {
   name = "eks_user"
   path = "/terraform/"
@@ -34,9 +39,12 @@ resource "aws_iam_user_policy" "eks_user" {
   name = "eks_user"
   user = aws_iam_user.eks_user.name
 }
-resource "sdm_role_grant" "eks" {
-  role_id     = sdm_role.eks_clusters.id
-  resource_id = sdm_resource.eks.id
+
+#################
+# Create strongDM Resource to access the cluster
+#################
+data "aws_eks_cluster" "cluster" {
+  name = module.eks.cluster_id
 }
 resource "sdm_resource" "eks" {
   amazon_eks {
@@ -47,9 +55,16 @@ resource "sdm_resource" "eks" {
     region   = split(".", data.aws_eks_cluster.cluster.endpoint)[2]
 
     certificate_authority          = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
-    certificate_authority_filename = "random_sting"
+    certificate_authority_filename = "random_string"
 
     access_key        = aws_iam_access_key.eks_user.id
     secret_access_key = aws_iam_access_key.eks_user.secret
   }
+}
+#################
+# Grant access to a strongDM Role
+#################
+resource "sdm_role_grant" "eks" {
+  role_id     = sdm_role.eks_clusters.id
+  resource_id = sdm_resource.eks.id
 }

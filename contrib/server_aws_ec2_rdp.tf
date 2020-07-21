@@ -1,3 +1,6 @@
+#################
+# Variables
+#################
 variable "server_name" {
   default = "windows-server"
 }
@@ -13,6 +16,7 @@ resource "aws_key_pair" "windows_key" {
   key_name   = "windows_key"
   public_key = tls_private_key.windows_server.public_key_openssh
 }
+
 #################
 # Deploy strongDM relay to private subnet
 #################
@@ -21,8 +25,8 @@ module "sdm_gateway" {
 
   sdm_node_name = "aws-windows-env"
 
-  deploy_vpc_id    = module.vpc.vpc_id
-  relay_subnet_ids = [module.vpc.private_subnets[0]]
+  deploy_vpc_id    = "vpc-1a2b3c4d"
+  relay_subnet_ids = ["subnet-1122aabb"]
 
   dev_mode = true
   tags     = var.default_tags
@@ -34,42 +38,33 @@ resource "aws_instance" "windows_server" {
   ami           = data.aws_ami.windows_server.image_id
   instance_type = "t3.medium"
 
-  subnet_id              = module.vpc.private_subnets[0]
+  subnet_id              = "subnet-1122aabb"
   vpc_security_group_ids = [aws_security_group.windows_server.id]
 
   get_password_data = true
   key_name          = aws_key_pair.windows_key.key_name
   # This key is used to encrypt the windows password
 
-  user_data = local.windows_user_data
-  # User data script makes NLA optional, and installs strongDM client 
-
-  tags = merge({ Name = var.server_name }, var.default_tags, )
-}
-locals {
-  windows_user_data = <<USERDATA
+  # User data script installs strongDM client 
+  user_data = <<USERDATA
 <powershell>
-# Allow authentication method to be negotiated between server and client
-Write-Output "Allow authentication method to be negotiated between server and client"
-New-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" -Name "SecurityLayer" -Value "1" -PropertyType DWORD -Force | Out-Null
 
-# Disable NLA for RDP  
-Write-Output "Disable NLA for RDP"
-New-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" -Name "UserAuthentication" -Value "0" -PropertyType DWORD -Force | Out-Null
-
-# Install firefox
-Invoke-WebRequest -Uri "https://download.mozilla.org/?product=firefox-msi-latest-ssl&os=win64&lang=en-GB" -Outfile C:\Users\Administrator\Desktop\firefox.msi
-Start-Process msiexec.exe -Wait -ArgumentList '/I C:\Users\Administrator\Desktop\firefox.msi /quiet'
+# strongDM requires tls 1.2 protocol or higher
+[Net.ServicePointManager]::SecurityProtocol +="tls12"
 
 # Install SDM Client
-[Net.ServicePointManager]::SecurityProtocol +='tls12'
 Invoke-WebRequest -Uri "https://app.strongdm.com/downloads/client/win32" -Outfile "C:\Users\Administrator\Desktop\sdm_installer.exe"
 Start-Process "C:\Users\Administrator\Desktop\sdm_installer.exe" -ArgumentList "/q" -Wait
-# For service installer use https://app.strongdm.com/releases/cli/windows
+# For strongDM windows service installer use https://app.strongdm.com/releases/cli/windows
+
 </powershell>
 <persist>true</persist>
 USERDATA
+
+  tags = merge({ "Name" = var.server_name }, var.default_tags)
 }
+
+# AMI ID for windows 2016 server  
 data "aws_ami" "windows_server" {
   owners      = ["amazon"]
   most_recent = true
@@ -78,6 +73,7 @@ data "aws_ami" "windows_server" {
     values = ["Windows_Server-2016-English*"]
   }
 }
+
 #################
 # Security Group allowing port 3389
 #################
@@ -92,6 +88,7 @@ resource "aws_security_group" "windows_server" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -99,7 +96,7 @@ resource "aws_security_group" "windows_server" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = merge({ Name = var.server_name }, var.default_tags, )
+  tags = merge({ "Name" = var.server_name }, var.default_tags, )
 }
 #################
 # Register server with strongDM
@@ -114,6 +111,10 @@ resource "sdm_resource" "windows_server" {
     tags     = var.default_tags
   }
 }
+
+#################
+# Create a role and grant access to RDP resource
+#################
 resource "sdm_role_grant" "windows_server" {
   role_id     = sdm_role.windows_server.id
   resource_id = sdm_resource.windows_server.id
@@ -121,6 +122,7 @@ resource "sdm_role_grant" "windows_server" {
 resource "sdm_role" "windows_server" {
   name = "Terraform Windows Servers Role"
 }
+
 #################
 # Outputs
 #################

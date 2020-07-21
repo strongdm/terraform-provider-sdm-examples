@@ -8,13 +8,16 @@ variable "az_client_id" {}
 variable "az_client_secret" {}
 
 #################
-# Resources
+# Create an Azure resource group
 #################
 resource "azurerm_resource_group" "k8s_class_aks" {
   name     = var.k8s_class_aks_name
   location = "West US"
 }
 
+#################
+# Create the AKS cluster
+#################
 resource "azurerm_kubernetes_cluster" "k8s_class_aks" {
   name                = var.k8s_class_aks_name
   location            = azurerm_resource_group.k8s_class_aks.location
@@ -35,6 +38,32 @@ resource "azurerm_kubernetes_cluster" "k8s_class_aks" {
   tags = var.default_tags
 }
 
+#################
+# Add the AKS cluster to strongDM 
+#################
+resource "sdm_resource" "k8s_class_aks" {
+  aks {
+    name = var.k8s_class_aks_name
+
+    hostname = azurerm_kubernetes_cluster.k8s_class_aks.fqdn
+    port     = 443
+
+    certificate_authority          = base64decode(azurerm_kubernetes_cluster.k8s_class_aks.kube_config.0.cluster_ca_certificate)
+    certificate_authority_filename = "random_string_ca"
+
+    client_certificate          = base64decode(azurerm_kubernetes_cluster.k8s_class_aks.kube_config.0.client_certificate)
+    client_certificate_filename = "random_string_cc"
+
+    client_key          = base64decode(azurerm_kubernetes_cluster.k8s_class_aks.kube_config.0.client_key)
+    client_key_filename = "random_string_ck"
+
+    # healthcheck_namespace = "default"
+  }
+}
+
+#################
+# Allow Terraform to control AKS cluster 
+#################
 provider "kubernetes" {
   alias = "aks"
 
@@ -44,35 +73,15 @@ provider "kubernetes" {
   host                   = azurerm_kubernetes_cluster.k8s_class_aks.kube_config.0.host
   username               = azurerm_kubernetes_cluster.k8s_class_aks.kube_config.0.username
   password               = azurerm_kubernetes_cluster.k8s_class_aks.kube_config.0.password
+
   client_certificate     = base64decode(azurerm_kubernetes_cluster.k8s_class_aks.kube_config.0.client_certificate)
   client_key             = base64decode(azurerm_kubernetes_cluster.k8s_class_aks.kube_config.0.client_key)
   cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.k8s_class_aks.kube_config.0.cluster_ca_certificate)
 }
 
-resource "sdm_resource" "k8s_class_aks" {
-  aks {
-    name = var.k8s_class_aks_name
-
-    hostname = azurerm_kubernetes_cluster.k8s_class_aks.fqdn
-    port     = 443
-
-    certificate_authority          = base64decode(azurerm_kubernetes_cluster.k8s_class_aks.kube_config.0.cluster_ca_certificate)
-    certificate_authority_filename = "random_sting_ca"
-
-    client_certificate          = base64decode(azurerm_kubernetes_cluster.k8s_class_aks.kube_config.0.client_certificate)
-    client_certificate_filename = "random_sting_cc"
-
-    client_key          = base64decode(azurerm_kubernetes_cluster.k8s_class_aks.kube_config.0.client_key)
-    client_key_filename = "random_sting_ck"
-
-    # healthcheck_namespace = "default"
-  }
-}
-resource "sdm_role_grant" "k8s_class_aks" {
-  role_id     = sdm_role.eks_clusters.id
-  resource_id = sdm_resource.k8s_class_aks.id
-}
-
+#################
+# Use Terraform to create strongDM gateways in AKS cluster
+#################
 module "aws_aks_sdm_gateway" {
   source = "github.com/peteroneilljr/terraform_aws_eks_strongdm_gateways"
 
