@@ -21,13 +21,13 @@ resource "sdm_role" "terraform" {
 # Create Oracle 19 DB
 #################
 resource "aws_db_instance" "rds" {
-  engine                      = "Oracle-ee"
-  publicly_accessible         = true
-  engine_version              = "19"
-  username                    = var.username
-  password                    = var.password
-  db_subnet_group_name        = aws_db_subnet_group.rds.name
-  vpc_security_group_ids      = [aws_security_group.rds.id]
+  engine                 = "Oracle-ee"
+  publicly_accessible    = true
+  engine_version         = "19"
+  username               = var.username
+  password               = var.password
+  db_subnet_group_name   = aws_db_subnet_group.rds.name
+  vpc_security_group_ids = [aws_security_group.rds.id]
 }
 
 #################
@@ -35,13 +35,13 @@ resource "aws_db_instance" "rds" {
 #################
 resource "sdm_resource" "oracle" {
   oracle {
-    name          = "Oracle_19_RDS_instance"
-    hostname      = aws_db_instance.rds.address
-    database      = aws_db_instance.rds.name
-    username      = aws_db_instance.rds.username
-    password      = aws_db_instance.rds.password
-    port          = 1521
-    tls_required  = false
+    name         = "Oracle_19_RDS_instance"
+    hostname     = aws_db_instance.rds.address
+    database     = aws_db_instance.rds.name
+    username     = aws_db_instance.rds.username
+    password     = aws_db_instance.rds.password
+    port         = 1521
+    tls_required = false
   }
 }
 

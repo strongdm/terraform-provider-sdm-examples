@@ -54,7 +54,7 @@ resource "sdm_resource" "ubuntu" {
   }
   # Provisioner to add strongDM public key to server.
   provisioner "remote-exec" {
-     inline = [
+    inline = [
       "echo '${self.ssh.0.public_key}' >> ~/.ssh/authorized_keys",
     ]
     connection {

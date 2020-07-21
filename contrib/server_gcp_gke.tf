@@ -73,7 +73,7 @@ provider "kubernetes" {
   version          = "~> 1.11"
   load_config_file = false
 
-  host                   = "https://${google_container_cluster.k8s_class_gke.endpoint}"
+  host = "https://${google_container_cluster.k8s_class_gke.endpoint}"
 
   client_certificate     = base64decode(google_container_cluster.k8s_class_gke.master_auth.0.client_certificate)
   client_key             = base64decode(google_container_cluster.k8s_class_gke.master_auth.0.client_key)
@@ -107,12 +107,12 @@ resource "sdm_resource" "k8s_class_gke" {
   google_gke {
     name = var.k8s_class_gke_name
 
-    endpoint = google_container_cluster.k8s_class_gke.endpoint 
-    
+    endpoint = google_container_cluster.k8s_class_gke.endpoint
+
     certificate_authority          = base64decode(google_container_cluster.k8s_class_gke.master_auth.0.cluster_ca_certificate)
     certificate_authority_filename = "random_string_ca"
 
-    service_account_key          = base64decode(google_service_account_key.k8s_class_gke.private_key) 
+    service_account_key          = base64decode(google_service_account_key.k8s_class_gke.private_key)
     service_account_key_filename = "random_string_sak"
 
     # healthcheck_namespace = "default"

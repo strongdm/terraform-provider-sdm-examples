@@ -15,10 +15,10 @@
 
 resource "sdm_resource" "postgres_example" {
   postgres {
-    name     = "Example Postgres Datasource"
+    name = "Example Postgres Datasource"
 
     hostname = "example.strongdm.com"
-    port = 5432
+    port     = 5432
 
     username = "example"
     password = "example"
