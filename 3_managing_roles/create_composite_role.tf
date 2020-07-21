@@ -33,5 +33,5 @@ resource "sdm_role" "example_role" {
 #################
 resource "sdm_role_attachment" "test_role_attachment" {
   composite_role_id = sdm_role.example_composite_role.id
-  attached_role_id = sdm_role.example_role.id
+  attached_role_id  = sdm_role.example_role.id
 }

@@ -46,6 +46,6 @@ resource "sdm_resource" "postgres_example" {
 # Grant the user access to the datasource
 #################
 resource "sdm_account_grant" "example_account_grant" {
-  account_id = sdm_account.example_user.id
+  account_id  = sdm_account.example_user.id
   resource_id = sdm_resource.postgres_example.id
 }

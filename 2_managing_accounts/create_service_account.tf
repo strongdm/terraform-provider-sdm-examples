@@ -15,8 +15,8 @@
 
 resource "sdm_account" "example_service_account" {
   service {
-    name = "example service account"
-    suspended  = false
+    name      = "example service account"
+    suspended = false
   }
 }
 
