@@ -33,7 +33,7 @@ resource "sdm_resource" "eks" {
 }
 
 locals {
-  certificate_authority = <<<CERT
+  certificate_authority = <<CERT
 -----BEGIN CERTIFICATE-----
 MIICpjCCAY4CCQCYJT6s+JVzSTANBgkqhkiG9w0BAQsFADAVMRMwEQYDVQQDDApr
 dWJlcm5ldGVzMB4XDTIwMDcxNTE0MjgzN1oXDTIxMDcxNTE0MjgzN1owFTETMBEG
