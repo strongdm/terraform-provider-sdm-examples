@@ -15,6 +15,6 @@
 
 resource "sdm_node" "example_relay" {
   relay {
-    name           = "example-relay"
+    name = "example-relay"
   }
 }
