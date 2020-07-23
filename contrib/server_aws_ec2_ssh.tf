@@ -12,7 +12,7 @@ resource "aws_key_pair" "server_key" {
 }
 
 #################
-# Grab latest ubuntu AMI ID
+# Grab latest Ubuntu AMI ID
 #################
 data "aws_ami" "ubuntu" {
   most_recent = true

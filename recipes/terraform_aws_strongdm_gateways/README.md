@@ -92,11 +92,11 @@ module "sdm" {
 | sdm_node_name | Logical name used as a prefix for gateway/relay resources and their dependencies. | `string` | `strongDM` | no |
 | deploy_vpc_id | Resource ID of the VPC where all resources are to be deployed | `string` | `null` | yes |
 | gateway_listen_port | TCP port strongDM clients will connect to, inbound rule is created on security groups for this port. | `num` | `5000` | no |
-| gateway_subnet_ids | A stronDM gateway will be created per subnet ID provided, the same ID can be provided more than once for H.A. | `list(string)` | [] | no |
+| gateway_subnet_ids | A strongDM gateway will be created per subnet ID provided, the same ID can be provided more than once for H.A. | `list(string)` | [] | no |
 | relay_subnet_ids | A strongDM relay will be create per subnet ID provider, this subnet will need an egress route to the strongDM gateway listen address. | `list(string)` | [] | no |
 | ssh_key | Add a SSH public key for SSH access to the EC2 instances hosting the gateways and relays. A key cannot be provided after the creation event. | `string` | `null` | no |
 | ssh_source | If ssh_key is set, an inbound rule is created on the gateway security group. Add a CIDR range here to restrict source IP address. | `string` | `0.0.0.0/0` | no |
-| encryption_key | Provide a KMS customer managed key ID to encrypt your strongDM tokens with. If left blank the default amazon managed key will used instead. | `string` | `null` | no |
+| encryption_key | Provide a KMS customer managed key ID to encrypt your strongDM tokens with. If left blank the default Amazon managed key will used instead. | `string` | `null` | no |
 | detailed_monitoiring | Enables detailed monitoring on all instances. | `bool` | `false` | no |
 | enable_cpu_alarm | When enabled a CloudWatch alarm is created for each instance. Threshold is greater than 75% utilization for 2 rounds of 5 minutes. | `bool` | `false` | no |
 | dns_hostnames | The strongDM gateways will look for the public dns name to use for the strongDM gateway hostname, set to false to switch to IP address. | `bool` | `true` | no |

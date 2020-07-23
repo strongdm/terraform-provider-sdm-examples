@@ -33,7 +33,7 @@ resource "aws_iam_access_key" "eks_user" {
 }
 
 #################
-# Create a role, this is where strongDM will inherit its cluster permissions. 
+# Create a role, this is where strongDM will inherit its cluster permissions 
 #################
 resource "aws_iam_role" "eks_role" {
   name = "eks_role"
@@ -79,7 +79,7 @@ resource "sdm_resource" "eks" {
   }
 }
 #################
-# grant access to a strongDM Role
+# Grant access to a strongDM Role
 #################
 resource "sdm_role_grant" "eks" {
   role_id     = sdm_role.eks_clusters.id

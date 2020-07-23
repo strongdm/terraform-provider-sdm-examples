@@ -1,4 +1,4 @@
-# StrongDM Gateways Deployed with Kubernetes 
+# strongDM Gateways Deployed with Kubernetes 
 
 Example Usage
 ~~~
