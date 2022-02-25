@@ -29,6 +29,11 @@ resource "sdm_resource" "eks" {
     role_arn          = "arn:aws:iam::000000000000:role/RoleName"
 
     healthcheck_namespace = "default"
+
+    tags = {
+      region = "us-east"
+      env = "dev"
+    }
   }
 }
 

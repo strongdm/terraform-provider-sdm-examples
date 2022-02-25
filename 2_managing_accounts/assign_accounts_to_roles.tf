@@ -14,7 +14,7 @@
 #
 
 #################
-# Create a user
+# Create a User
 #################
 resource "sdm_account" "example_user" {
   user {
@@ -26,14 +26,17 @@ resource "sdm_account" "example_user" {
 }
 
 #################
-# Create a role
+# Create a Role with Access Rule
 #################
-resource "sdm_role" "example_role" {
-  name = "example role"
+resource "sdm_role" "example-role" {
+  name = "example-role"
+  access_rule {
+    ids = [sdm_resource.make.id]
+  }
 }
 
 #################
-# Attach the user to the role
+# Attach the User to the Role
 #################
 resource "sdm_account_attachment" "example_attachment" {
   account_id = sdm_account.example_user.id
