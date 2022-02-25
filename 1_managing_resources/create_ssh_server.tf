@@ -19,5 +19,8 @@ resource "sdm_resource" "ssh_example" {
     hostname = "example.strongdm.com"
     username = "example"
     port     = 22
+    tags     = {
+      env = "dev"
+    }
   }
 }

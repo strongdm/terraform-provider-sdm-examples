@@ -14,8 +14,11 @@
 #
 
 #################
-# Create a role
+# Create a Role with Access Rule
 #################
-resource "sdm_role" "example_role" {
-  name = "example role"
+resource "sdm_role" "example-role" {
+  name = "example-role"
+  access_rule {
+    ids = [sdm_resource.make.id]
+  }
 }

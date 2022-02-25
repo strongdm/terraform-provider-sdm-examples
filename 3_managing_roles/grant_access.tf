@@ -14,39 +14,73 @@
 #
 
 #################
-# Create a datasource
+# Create a resource (e.g., Postgres)
 #################
-resource "sdm_resource" "postgres_example" {
+resource "sdm_resource" "make" {
   postgres {
-    name = "Example Postgres Datasource"
-
-    hostname = "example.strongdm.com"
-    port     = 5432
-
-    username = "example"
-    password = "example"
-
-    database = "example"
+    name                       = "Example Postgres Resource"
+    hostname                   = "example.strongdm.com"
+    port                       = "1306"
+    database                   = "postgres"
+    secret_store_id            = "se-123e45678901bb23"
+    secret_store_username_path = "example/sdm?key=user"
+    secret_store_password_path = "example/sdm?key=pw"
   }
 }
 
 #################
-# Create a role
+# Create a Role with Access Rule
 #################
-resource "sdm_role" "example_role" {
-  name = "example role"
+resource "sdm_role" "example-role" {
+  name = "example-role"
+  access_rule {
+    ids = [sdm_resource.make.id]
+  }
 }
 
 #################
-# Grant the role access to the datasource
+# Grant access
 #################
-resource "sdm_role_grant" "example_role_grant" {
-  role_id     = sdm_role.example_user.id
-  resource_id = sdm_resource.postgres_example.id
+# When using Dynamic Access Rules, the best practice is to grant Resources access based on
+Type and Tags.
+
+resource "sdm_role" "example-role" {
+  name = "example-role"
+
+  # Example: Grant access to all dev environment resources in us-west region
+  access_rule {
+    tags = {
+      env = "dev"
+      region = "us-west"
+    }
+  }
+
+  # Example: Grant access to all Postgres resources
+  access_rule {
+    type = "postgres"
+  }
+
+  # Grant access to all Redis Datasources in us-east region
+  access_rule {
+    type = "redis"
+    tags = {
+      region = "us-east"
+    }
+  }
+}
+
+# If it is _necessary_ to grant access to specific resources in the same way as
+RoleGrants did, you can use Resource IDs directly in Static Access Rules.
+
+resource "sdm_role" "engineering" {
+  name = "engineering"
+  access_rule {
+    ids = [sdm_resource.redis-test.id, sdm_resource.postgres-test.id]
+  }
 }
 
 #################
-# Create a user
+# Create a User
 #################
 resource "sdm_account" "example_user" {
   user {
@@ -58,7 +92,7 @@ resource "sdm_account" "example_user" {
 }
 
 #################
-# Attach the user to the role
+# Attach the User to the Role
 #################
 resource "sdm_account_attachment" "example_account_attachment" {
   account_id = sdm_account.example_user.id

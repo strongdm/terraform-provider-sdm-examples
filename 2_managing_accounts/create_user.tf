@@ -13,6 +13,9 @@
 # limitations under the License.
 #
 
+#################
+# Create a User
+#################
 resource "sdm_account" "example_user" {
   user {
     first_name = "example"

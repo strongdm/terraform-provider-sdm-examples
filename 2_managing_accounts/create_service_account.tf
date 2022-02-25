@@ -13,6 +13,9 @@
 # limitations under the License.
 #
 
+#################
+# Create a Service Account
+#################
 resource "sdm_account" "example_service_account" {
   service {
     name      = "example service account"

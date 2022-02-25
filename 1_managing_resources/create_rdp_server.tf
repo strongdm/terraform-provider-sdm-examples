@@ -20,5 +20,8 @@ resource "sdm_resource" "rdp_example" {
     username = "example"
     password = "example"
     port     = 3389
+    tags     = {
+      env = "dev"
+    }
   }
 }
