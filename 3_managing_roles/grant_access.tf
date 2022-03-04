@@ -14,7 +14,7 @@
 #
 
 #################
-# Create a resource (e.g., Postgres)
+# Create a Resource (e.g., Postgres)
 #################
 resource "sdm_resource" "make" {
   postgres {
@@ -41,13 +41,13 @@ resource "sdm_role" "example-role" {
 #################
 # Grant access
 #################
-# When using Dynamic Access Rules, the best practice is to grant Resources access based on
-Type and Tags.
+# When using Access Rules, the best practice is to give Roles access to Resources based on
+type and tags.
 
 resource "sdm_role" "example-role" {
   name = "example-role"
 
-  # Example: Grant access to all dev environment resources in us-west region
+  # Example: Grant access to all dev environment Resources in us-west region
   access_rule {
     tags = {
       env = "dev"
@@ -55,7 +55,7 @@ resource "sdm_role" "example-role" {
     }
   }
 
-  # Example: Grant access to all Postgres resources
+  # Example: Grant access to all Postgres Resources
   access_rule {
     type = "postgres"
   }
@@ -69,8 +69,8 @@ resource "sdm_role" "example-role" {
   }
 }
 
-# If it is _necessary_ to grant access to specific resources in the same way as
-RoleGrants did, you can use Resource IDs directly in Static Access Rules.
+# If it is _necessary_ to grant access to specific Resources in the same way as
+Role Grants did, you can use Resource IDs directly in Static Access Rules.
 
 resource "sdm_role" "engineering" {
   name = "engineering"

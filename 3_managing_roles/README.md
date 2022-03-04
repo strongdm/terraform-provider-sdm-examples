@@ -4,21 +4,19 @@ A collection of examples regarding managing Roles.
 
 ## Migrating to Access Rules
 
-To increase flexibility when managing thousands of Resources, Role Grants have
+To increase flexibility when managing a large volume of Resources, Role Grants have
 been deprecated in favor of Access Rules, which allow you to grant access based
-on Resource Tags and Type. Role Grants will be removed from the Terraform
-provider by March 15, 2022.
+on Resource tags and type.
 
 The following examples demonstrate the deprecated Role Grants, Dynamic Access
-Rules with Tags and Resource Types, and Static Access Rules for backwards
-compatibility with Role Grants.
+Rules with tags and Resource types, and Static Access Rules.
 
 ### Role Grants (deprecated)
 
-Previously, you would grant a Role access to specific resources by ID via Role
+Previously, you would grant a Role access to specific Resources by ID via Role
 Grants:
 
-```hcl
+```tf
 resource "sdm_resource" "redis-test" {
   redis {
     name = "redis-test"
@@ -63,14 +61,14 @@ resource "sdm_role_grant" "engineering-postgres" {
 
 ### Dynamic Access Rules
 
-When using Access Rules, the best practice is to grant Resources access based on
-Type and Tags.
+When using Access Rules, the best practice is to give Roles access to Resources based on
+type and tags.
 
-```hcl
+```tf
 resource "sdm_role" "engineering" {
   name = "engineering"
 
-  # Grant access to all dev environment resources in us-west
+  # Grant access to all dev environment Resources in us-west
   access_rule {
     tags = {
       env = "dev"
@@ -78,12 +76,12 @@ resource "sdm_role" "engineering" {
     }
   }
 
-  # Grant access to all postgres resources
+  # Grant access to all Postgres Resources
   access_rule {
     type = "postgres"
   }
 
-  # Grant access to all redis datasources in us-east
+  # Grant access to all Redis Datasources in us-east
   access_rule {
     type = "redis"
     tags = {
@@ -98,7 +96,7 @@ resource "sdm_role" "engineering" {
 If it is _necessary_ to grant access to specific Resources in the same way as
 Role Grants did, you can use Resource IDs directly in Access Rules.
 
-```hcl
+```tf
 resource "sdm_role" "engineering" {
   name = "engineering"
   access_rule {
