@@ -17,12 +17,15 @@
 # Create a User
 #################
 resource "sdm_account" "example_user" {
-  user {
-    first_name = "example"
-    last_name  = "example"
-    email      = "example@strongdm.com"
-    suspended  = false
-  }
+  user = jsonencode(
+    [
+      {
+        first_name = "Example",
+        last_name  = "Example",
+        email      = "example@strongdm.com",
+        suspended  = false
+      }
+    ])
 }
 
 #################
@@ -30,7 +33,7 @@ resource "sdm_account" "example_user" {
 #################
 resource "sdm_role" "example-role" {
   name = "example-role"
-  access_rule {
+  access_rules {
     ids = [sdm_resource.make.id]
   }
 }

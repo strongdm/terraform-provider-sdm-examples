@@ -14,7 +14,8 @@
 #
 
 resource "sdm_node" "example_relay" {
-  relay {
-    name = "example-relay"
-  }
+  relay = jsonencode(
+    [
+      { name = "example-relay" }
+    ])
 }
