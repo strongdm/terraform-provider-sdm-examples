@@ -18,7 +18,7 @@
 #################
 resource "sdm_role" "example-role" {
   name = "example-role"
-  access_rule {
+  access_rules {
     ids = [sdm_resource.make.id]
   }
 }

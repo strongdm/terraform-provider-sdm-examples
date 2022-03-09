@@ -17,9 +17,12 @@
 # Create a Service Account
 #################
 resource "sdm_account" "example_service_account" {
-  service {
-    name      = "example service account"
-    suspended = false
-  }
+  service = jsonencode(
+    [
+      {
+        name      = "Example Service Account",
+        suspended = false
+      }
+    ])
 }
 

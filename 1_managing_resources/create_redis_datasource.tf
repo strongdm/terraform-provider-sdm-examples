@@ -14,13 +14,14 @@
 #
 
 resource "sdm_resource" "redis_example" {
-  redis {
-    name     = "redis example"
-    hostname = "example.com"
-    password = "example"
-    port     = 6379
-    tags = {
-      env = "dev"
-    }
-  }
+  redis = jsonencode(
+    [
+      {
+        name     = "redis example",
+        hostname = "example.com",
+        password = "example",
+        port     = 6379,
+        tags = { env = "dev" }
+      }
+    ])
 }
