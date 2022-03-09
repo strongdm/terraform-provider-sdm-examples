@@ -55,19 +55,21 @@ resource "sdm_role" "example-role" {
     [
       { tags = { env = "dev", region = "us-west" } }
     ])
-}
+  }
 
   # Example: Grant access to all Postgres Resources
-  access_rules {
-    type = "postgres"
+  access_rules = jsonencode(
+    [
+      { type = "postgres" }
+    ])
   }
 
   # Grant access to all Redis Datasources in us-east region
-  access_rules {
-    type = "redis"
-    tags = jsonencode(
+  access_rules = jsonencode(
     [
-      { tags = { region = "us-east" } }
+      {
+        type = "redis",
+        tags = { region = "us-east" } }
     ])
   }
 }
