@@ -13,12 +13,14 @@
 # limitations under the License.
 #
 
-#################
+##################################
 # Create a Role with Access Rule
-#################
+##################################
 resource "sdm_role" "example-role" {
   name = "example-role"
-  access_rules {
-    ids = [sdm_resource.make.id]
-  }
+  access_rules = jsonencode([
+    {
+      "ids": [sdm_resource.make.id]
+    }
+  ])
 }

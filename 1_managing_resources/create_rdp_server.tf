@@ -14,15 +14,14 @@
 #
 
 resource "sdm_resource" "rdp_example" {
-  rdp = jsonencode(
-    [
-      {
-        name     = "Example RDP Server",
-        hostname = "example.strongdm.com",
-        username = "example",
-        password = "example",
-        port     = 3389,
-        tags     = { env = "dev" }
-      }
-    ])
+  rdp = jsonencode([
+    {
+      "name": "Example RDP Server",
+      "hostname": "example.strongdm.com",
+      "username": "example",
+      "password": "example",
+      "port": 3389,
+      "tags": { "env": "dev" }
+    }
+  ])
 }

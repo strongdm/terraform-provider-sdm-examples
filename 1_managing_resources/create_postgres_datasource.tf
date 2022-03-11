@@ -14,16 +14,15 @@
 #
 
 resource "sdm_resource" "postgres_example" {
-  postgres = jsonencode(
-    [
-      {
-        name     = "Example Postgres Datasource",
-        hostname = "example.strongdm.com",
-        database = "example",
-        username = "example",
-        password = "example",
-        port     = 5432,
-        tags     = { env = "dev" }
-      }
-    ]) 
+  postgres = jsonencode([
+    {
+      "name": "Example Postgres Datasource",
+      "hostname": "example.strongdm.com",
+      "database": "example",
+      "username": "example",
+      "password": "example",
+      "port": 5432,
+      "tags": { "env": "dev" }
+    }
+  ]) 
 }

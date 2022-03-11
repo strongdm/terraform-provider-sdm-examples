@@ -69,25 +69,28 @@ resource "sdm_role" "engineering" {
   name = "engineering"
 
   # Grant access to all dev environment Resources in us-west
-  access_rules = jsonencode(
-    [
-      { tags = { env = "dev", region = "us-west" } }
-    ])
+  access_rules = jsonencode([
+    {
+      "tags": { "env": "dev" }, { "region": "us-west" }
+    }
+  ])
+}
 
   # Grant access to all Postgres Resources
-  access_rules = jsonencode(
-    [
-      { type = "postgres" }
-    ])
-  }
+  access_rules = jsonencode([
+    {
+      "type": "postgres"
+    }
+  ])
+}
 
   # Grant access to all Redis Datasources in us-east
-  access_rules = jsonencode(
-    [
-      { 
-        type = "redis",
-        tags = { region = "us-east" } }
-    ])
+  access_rules = jsonencode([
+    { 
+      "type": "redis",
+      "tags": { "region": "us-east" }
+    }
+  ])
 }
 ```
 
@@ -99,8 +102,13 @@ Role Grants did, you can use Resource IDs directly in Access Rules.
 ```tf
 resource "sdm_role" "engineering" {
   name = "engineering"
-  access_rules {
-    ids = [sdm_resource.redis-test.id, sdm_resource.postgres-test.id]
-  }
+  access_rules = jsonencode([
+    {
+      "ids": [
+        sdm_resource.redis-test.id,
+        sdm_resource.postgres-test.id
+      ]
+    }
+  ])
 }
 ```

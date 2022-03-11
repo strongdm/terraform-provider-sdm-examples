@@ -1,3 +1,3 @@
 # Managing Resources
 
-A collection of examples regarding managing resources.
+A collection of examples regarding managing Resources.
