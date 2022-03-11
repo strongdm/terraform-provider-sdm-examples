@@ -13,16 +13,15 @@
 # limitations under the License.
 #
 
-#################
+############################
 # Create a Service Account
-#################
+############################
 resource "sdm_account" "example_service_account" {
-  service = jsonencode(
-    [
-      {
-        name      = "Example Service Account",
-        suspended = false
-      }
-    ])
+  service = jsonencode([
+    {
+      "name": "Example Service Account",
+      "suspended": false
+    }
+  ])
 }
 
