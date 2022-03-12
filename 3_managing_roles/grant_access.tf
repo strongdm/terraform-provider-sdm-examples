@@ -49,25 +49,19 @@ type and tags.
 
 resource "sdm_role" "example-role" {
   name = "example-role"
-
-  # Example: Grant access to all dev environment Resources in us-west region
   access_rules = jsonencode([
+
+    # Example: Grant access to all dev environment Resources in us-west region
     {
       "tags": { "env": "dev", "region": "us-west" }
-    }
-  ])
-}
+    },
 
-  # Example: Grant access to all Postgres Resources
-  access_rules = jsonencode([
+    # Example: Grant access to all Postgres Resources
     {
       "type": "postgres"
-    }
-  ])
-}
+    },
 
-  # Grant access to all Redis Datasources in us-east region
-  access_rules = jsonencode([
+    # Grant access to all Redis Datasources in us-east region
     {
       "type": "redis",
       "tags": { "region": "us-east" }
