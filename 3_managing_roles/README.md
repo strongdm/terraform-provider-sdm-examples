@@ -67,26 +67,20 @@ type and tags.
 ```tf
 resource "sdm_role" "engineering" {
   name = "engineering"
-
-  # Grant access to all dev environment Resources in us-west
   access_rules = jsonencode([
+
+    # Grant access to all dev environment Resources in us-west
     {
       "tags": { "env": "dev", "region": "us-west" }
-    }
-  ])
-}
+    },
 
-  # Grant access to all Postgres Resources
-  access_rules = jsonencode([
+    # Grant access to all Postgres Resources
     {
       "type": "postgres"
-    }
-  ])
-}
+    },
 
-  # Grant access to all Redis Datasources in us-east
-  access_rules = jsonencode([
-    { 
+    # Grant access to all Redis Datasources in us-east
+    {
       "type": "redis",
       "tags": { "region": "us-east" }
     }
