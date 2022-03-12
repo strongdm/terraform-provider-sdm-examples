@@ -17,13 +17,11 @@
 # Create a User
 #################
 resource "sdm_account" "example_user" {
-  user = jsonencode([
-    {
-      "first_name": "Example",
-      "last_name": "Example",
-      "email": "example@strongdm.com",
-      "suspended": false
-    }
-  ])
+  user {
+    first_name = "Example"
+    last_name  = "Example"
+    email      = "example@strongdm.com"
+    suspended  = false
+  }
 }
 

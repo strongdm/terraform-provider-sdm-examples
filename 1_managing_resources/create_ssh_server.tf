@@ -14,13 +14,11 @@
 #
 
 resource "sdm_resource" "ssh_example" {
-  ssh = jsonencode([
-    {
-      "name": "Example SSH Server",
-      "hostname": "example.strongdm.com",
-      "username": "example",
-      "port": 22,
-      "tags": { "env": "dev" }
-    }
-  ])
+  ssh {
+    name      = "Example SSH Server"
+    hostname  = "example.strongdm.com"
+    username  = "example"
+    port      = 22
+    tags      = { env = "dev" }
+  }
 }

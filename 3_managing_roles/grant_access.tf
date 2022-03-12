@@ -17,18 +17,16 @@
 # Create a Resource (e.g., Postgres)
 ######################################
 resource "sdm_resource" "make" {
-  postgres = jsonencode([
-    {
-      "name": "Example Postgres Resource",
-      "hostname": "example.strongdm.com",
-      "port": "1306",
-      "database": "postgres",
-      "secret_store_id": "se-123e45678901bb23",
-      "secret_store_username_path": "example/sdm?key=user",
-      "secret_store_password_path": "example/sdm?key=pw"
-      "tags": { "env": "dev" }
-    }
-  ])
+  postgres {
+    name                        = "Example Postgres Resource"
+    hostname                    = "example.strongdm.com"
+    port                        = "1306"
+    database                    = "postgres"
+    secret_store_id             = "se-123e45678901bb23"
+    secret_store_username_path  = "example/sdm?key=user"
+    secret_store_password_path  = "example/sdm?key=pw"
+    tags                        = { "env": "dev" }
+  }
 }
 
 ##################################
@@ -55,7 +53,7 @@ resource "sdm_role" "example-role" {
   # Example: Grant access to all dev environment Resources in us-west region
   access_rules = jsonencode([
     {
-      "tags": {"env": "dev" }, { "region": "us-west" }
+      "tags": { "env": "dev", "region": "us-west" }
     }
   ])
 }
@@ -96,14 +94,12 @@ resource "sdm_role" "engineering" {
 # Create a User
 #################
 resource "sdm_account" "example_user" {
-  user = jsonencode([
-    {
-      "first_name": "example",
-      "last_name": "example",
-      "email": "example@strongdm.com",
-      "suspended": false
-    }
-  ])
+  user {
+    first_name  = "example"
+    last_name   = "example"
+    email       = "example@strongdm.com"
+    suspended   = false
+  }
 }
 
 ###############################

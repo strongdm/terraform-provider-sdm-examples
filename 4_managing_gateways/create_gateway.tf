@@ -14,10 +14,8 @@
 #
 
 resource "sdm_node" "example_gateway" {
-  gateway = jsonencode([
-    {
-      "name": "example-gateway",
-      "listen_address": "gateway.example.com:5555"
-    }
-  ])
+  gateway {
+    name            = "example-gateway"
+    listen_address  = "gateway.example.com:5555"
+  }
 }
