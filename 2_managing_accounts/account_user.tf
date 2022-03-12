@@ -14,18 +14,16 @@
 #
 
 resource "sdm_account" "alice" {
-  user = jsonencode([
-    {
-      "first_name": "Alice",
-      "last_name": "Glick",
-      "email": "alice.glick@strongdm.com",
-      "suspended": false
-    }
-  ])
+  user {
+    first_name = "Alice"
+    last_name  = "Glick"
+    email      = "alice.glick@strongdm.com"
+    suspended  = false
+  }
 }
 resource "sdm_account_attachment" "alice_terraform" {
   account_id = sdm_account.alice.id
-  role_id = sdm_role.terraform.id
+  role_id    = sdm_role.terraform.id
 }
 resource "sdm_role" "terraform" {
   name = "Terraform Role"

@@ -17,14 +17,12 @@
 # Create a User
 #################
 resource "sdm_account" "example_user" {
-  user = jsonencode([
-    {
-      "first_name": "Example",
-      "last_name": "Example",
-      "email": "example@strongdm.com",
-      "suspended": false
-    }
-  ])
+  user {
+    first_name = "Example"
+    last_name  = "Example"
+    email      = "example@strongdm.com"
+    suspended  = false
+  }
 }
 
 ##################################
@@ -44,6 +42,6 @@ resource "sdm_role" "example-role" {
 ###############################
 resource "sdm_account_attachment" "example_attachment" {
   account_id = sdm_account.example_user.id
-  role_id = sdm_role.example_role.id
+  role_id    = sdm_role.example_role.id
 }
 

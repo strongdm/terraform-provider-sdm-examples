@@ -71,7 +71,7 @@ resource "sdm_role" "engineering" {
   # Grant access to all dev environment Resources in us-west
   access_rules = jsonencode([
     {
-      "tags": { "env": "dev" }, { "region": "us-west" }
+      "tags": { "env": "dev", "region": "us-west" }
     }
   ])
 }
