@@ -25,7 +25,7 @@ resource "sdm_resource" "make" {
     secret_store_id             = "se-123e45678901bb23"
     secret_store_username_path  = "example/sdm?key=user"
     secret_store_password_path  = "example/sdm?key=pw"
-    tags                        = { "env": "dev" }
+    tags                        = { env = "dev" }
   }
 }
 
