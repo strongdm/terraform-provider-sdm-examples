@@ -21,6 +21,6 @@ resource "sdm_resource" "postgres_example" {
     username  = "example"
     password  = "example"
     port      = 5432
-    tags      = { "env": "dev" }
+    tags      = { env = "dev" }
   }
 }

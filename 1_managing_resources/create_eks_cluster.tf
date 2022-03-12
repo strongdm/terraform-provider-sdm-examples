@@ -25,7 +25,7 @@ resource "sdm_resource" "eks" {
     secret_access_key               = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
     role_arn                        = "arn:aws:iam::000000000000:role/RoleName"
     healthcheck_namespace           = "default"
-    tags                            = { "region": "us-east" }
+    tags                            = { region = "us-east" }
   }
 }
 
