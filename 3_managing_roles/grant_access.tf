@@ -29,23 +29,11 @@ resource "sdm_resource" "make" {
   }
 }
 
-##################################
-# Create a Role with Access Rule
-##################################
-resource "sdm_role" "example-role" {
-  name = "example-role"
-  access_rules = jsonencode([
-    {
-    "ids": [sdm_resource.make.id]
-    }
-  ])
-}
-
 ################
 # Grant access
 ################
 # When using Access Rules, the best practice is to give Roles access to Resources based on
-type and tags.
+# type and tags.
 
 resource "sdm_role" "example-role" {
   name = "example-role"
@@ -70,7 +58,7 @@ resource "sdm_role" "example-role" {
 }
 
 # If it is _necessary_ to grant access to specific Resources in the same way as
-Role Grants did, you can use Resource IDs directly in Static Access Rules.
+# Role Grants did, you can use Resource IDs directly in Static Access Rules.
 
 resource "sdm_role" "engineering" {
   name = "engineering"
