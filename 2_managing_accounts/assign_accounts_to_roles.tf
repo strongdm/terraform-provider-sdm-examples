@@ -16,11 +16,11 @@
 #################
 # Create a User
 #################
-resource "sdm_account" "example_user" {
+resource "sdm_account" "example_user_2" {
   user {
-    first_name = "Example"
-    last_name  = "Example"
-    email      = "example@strongdm.com"
+    first_name = "Example2"
+    last_name  = "Example2"
+    email      = "example2@example.com"
     suspended  = false
   }
 }
@@ -28,20 +28,15 @@ resource "sdm_account" "example_user" {
 ##################################
 # Create a Role with Access Rule
 ##################################
-resource "sdm_role" "example-role" {
+resource "sdm_role" "example_role" {
   name = "example-role"
-  access_rules = jsonencode([
-    {
-      "ids": [sdm_resource.make.id]
-    }
-  ])
 }
 
 ###############################
 # Attach the User to the Role
 ###############################
 resource "sdm_account_attachment" "example_attachment" {
-  account_id = sdm_account.example_user.id
+  account_id = sdm_account.example_user_2.id
   role_id    = sdm_role.example_role.id
 }
 

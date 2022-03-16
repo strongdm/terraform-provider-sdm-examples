@@ -16,16 +16,25 @@
 ######################################
 # Create a Resource (e.g., Postgres)
 ######################################
-resource "sdm_resource" "make" {
+resource "sdm_resource" "postgres-test" {
   postgres {
-    name                        = "Example Postgres Resource"
-    hostname                    = "example.strongdm.com"
-    port                        = "1306"
-    database                    = "postgres"
-    secret_store_id             = "se-123e45678901bb23"
-    secret_store_username_path  = "example/sdm?key=user"
-    secret_store_password_path  = "example/sdm?key=pw"
-    tags                        = { env = "dev" }
+    name     = "Example Postgres Resource"
+    hostname = "example.strongdm.com"
+    port     = "1306"
+    database = "postgres"
+    username = "user"
+    password = "pw"
+    tags     = { env = "dev" }
+  }
+}
+
+resource "sdm_resource" "redis-test" {
+  redis {
+    name     = "redis example"
+    hostname = "example.com"
+    password = "example"
+    port     = 6379
+    tags     = { region = "us-east" }
   }
 }
 
@@ -35,24 +44,24 @@ resource "sdm_resource" "make" {
 # When using Access Rules, the best practice is to give Roles access to Resources based on
 # type and tags.
 
-resource "sdm_role" "example-role" {
-  name = "example-role"
+resource "sdm_role" "access-rules-role" {
+  name = "access-rules-role"
   access_rules = jsonencode([
 
     # Example: Grant access to all dev environment Resources in us-west region
     {
-      "tags": { "env": "dev", "region": "us-west" }
+      "tags" : { "env" : "dev", "region" : "us-west" }
     },
 
     # Example: Grant access to all Postgres Resources
     {
-      "type": "postgres"
+      "type" : "postgres"
     },
 
     # Grant access to all Redis Datasources in us-east region
     {
-      "type": "redis",
-      "tags": { "region": "us-east" }
+      "type" : "redis",
+      "tags" : { "region" : "us-east" }
     }
   ])
 }
@@ -64,7 +73,7 @@ resource "sdm_role" "engineering" {
   name = "engineering"
   access_rules = jsonencode([
     {
-      "ids": [
+      "ids" : [
         sdm_resource.redis-test.id,
         sdm_resource.postgres-test.id
       ]
@@ -77,10 +86,10 @@ resource "sdm_role" "engineering" {
 #################
 resource "sdm_account" "example_user" {
   user {
-    first_name  = "example"
-    last_name   = "example"
-    email       = "example@strongdm.com"
-    suspended   = false
+    first_name = "example"
+    last_name  = "example"
+    email      = "example@example.com"
+    suspended  = false
   }
 }
 
@@ -89,5 +98,5 @@ resource "sdm_account" "example_user" {
 ###############################
 resource "sdm_account_attachment" "example_account_attachment" {
   account_id = sdm_account.example_user.id
-  role_id = sdm_role.example_role.id
+  role_id    = sdm_role.access-rules-role.id
 }

@@ -17,7 +17,7 @@ resource "sdm_account" "alice" {
   user {
     first_name = "Alice"
     last_name  = "Glick"
-    email      = "alice.glick@strongdm.com"
+    email      = "alice.glick@example.com"
     suspended  = false
   }
 }

@@ -15,17 +15,16 @@
 
 resource "sdm_resource" "eks" {
   amazon_eks {
-    name                            = "Example EKS Cluster"
-    cluster_name                    = "example"
-    endpoint                        = "https://A1ADBDD0AE833267869C6ED0476D6B41.gr7.us-east-2.eks.amazonaws.com"
-    region                          = "us-east-1"
-    certificate_authority           = local.certificate_authority
-    certificate_authority_filename  = "random_string"
-    access_key                      = "AKIAIOSFODNN7EXAMPLE"
-    secret_access_key               = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
-    role_arn                        = "arn:aws:iam::000000000000:role/RoleName"
-    healthcheck_namespace           = "default"
-    tags                            = { region = "us-east" }
+    name                  = "Example EKS Cluster"
+    cluster_name          = "example"
+    endpoint              = "https://A1ADBDD0AE833267869C6ED0476D6B41.gr7.us-east-2.eks.amazonaws.com"
+    region                = "us-east-1"
+    certificate_authority = local.certificate_authority
+    access_key            = "AKIAIOSFODNN7EXAMPLE"
+    secret_access_key     = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+    role_arn              = "arn:aws:iam::000000000000:role/RoleName"
+    healthcheck_namespace = "default"
+    tags                  = { region = "us-east" }
   }
 }
 

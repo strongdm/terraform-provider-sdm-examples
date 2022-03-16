@@ -15,7 +15,7 @@
 
 resource "sdm_node" "example_gateway" {
   gateway {
-    name            = "example-gateway"
-    listen_address  = "gateway.example.com:5555"
+    name           = "example-gateway"
+    listen_address = "gateway.example.com:5555"
   }
 }

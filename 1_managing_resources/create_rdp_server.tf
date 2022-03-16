@@ -15,11 +15,11 @@
 
 resource "sdm_resource" "rdp_example" {
   rdp {
-    name      = "Example RDP Server"
-    hostname  = "example.strongdm.com"
-    username  = "example"
-    password  = "example"
-    port      = 3389
-    tags      = { env = "dev" }
+    name     = "Example RDP Server"
+    hostname = "example.strongdm.com"
+    username = "example"
+    password = "example"
+    port     = 3389
+    tags     = { env = "dev" }
   }
 }

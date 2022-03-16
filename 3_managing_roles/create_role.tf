@@ -18,9 +18,4 @@
 ##################################
 resource "sdm_role" "example-role" {
   name = "example-role"
-  access_rules = jsonencode([
-    {
-      "ids": [sdm_resource.make.id]
-    }
-  ])
 }
