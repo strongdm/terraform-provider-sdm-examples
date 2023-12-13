@@ -60,10 +60,10 @@ resource "sdm_account" "approver_user-manual-workflow" {
 ####################################
 # Create a Workflow Approver 
 ####################################
-# Workflow approvers are the users who can manually respond to an access request.
+# Workflow approvers are the users or roles who can manually respond to an access request.
 resource "sdm_workflow_approver" "workflow-approver" {
   workflow_id = sdm_workflow.manual-approval-workflow.id
-  approver_id = sdm_account.approver_user-manual-workflow.id
+  account_id = sdm_account.approver_user-manual-workflow.id
 }
 
 ####################################
@@ -83,7 +83,6 @@ resource "sdm_workflow_role" "workflow-role-manual-workflow" {
   workflow_id = sdm_workflow.manual-approval-workflow.id
   role_id = sdm_role.example-role-manual-workflow.id
 }
-
 
 # At this point, the workflow will be created and an approver assigned, but the
 # workflow will not be enabled. A subsequent update to the workflow is required
