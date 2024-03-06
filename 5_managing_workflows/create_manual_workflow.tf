@@ -44,29 +44,6 @@ resource "sdm_workflow" "manual-approval-workflow" {
 }
 
 ####################################
-# Create a User 
-####################################
-# This user will be the approver of the manual approval workflow. One or more
-# approvers are required in order to enable a manual approval workflow.
-resource "sdm_account" "approver_user-manual-workflow" {
-    user {
-        first_name = "Test"
-        last_name = "Approver"
-        email = "test.approver@example.com"
-        suspended = false
-    }
-}
-
-####################################
-# Create a Workflow Approver 
-####################################
-# Workflow approvers are the users or roles who can manually respond to an access request.
-resource "sdm_workflow_approver" "workflow-approver" {
-  workflow_id = sdm_workflow.manual-approval-workflow.id
-  account_id = sdm_account.approver_user-manual-workflow.id
-}
-
-####################################
 # Create a Role 
 ####################################
 # This role will grant users with this role access to the resources managed by this workflow.
