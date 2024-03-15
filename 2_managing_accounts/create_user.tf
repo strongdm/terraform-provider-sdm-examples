@@ -20,8 +20,20 @@ resource "sdm_account" "example_user" {
   user {
     first_name = "Example"
     last_name  = "Example"
-    email      = "example@example.com"
-    suspended  = false
+    email      = "terraform-create-user-example@example.com"
+    permission_level  = "database-admin"
+  }
+}
+
+#################
+# Create a Suspended User
+#################
+resource "sdm_account" "example_suspended_user" {
+  user {
+    first_name = "Example"
+    last_name  = "Example"
+    email      = "terraform-create-suspended-user-example@example.com"
+    permission_level  = "suspended"
   }
 }
 

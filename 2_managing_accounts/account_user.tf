@@ -18,7 +18,7 @@ resource "sdm_account" "alice" {
     first_name = "Alice"
     last_name  = "Glick"
     email      = "alice.glick@example.com"
-    suspended  = false
+    permission_level  = "multi-team-leader"
   }
 }
 resource "sdm_account_attachment" "alice_terraform" {

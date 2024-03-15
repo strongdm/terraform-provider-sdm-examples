@@ -89,7 +89,6 @@ resource "sdm_account" "example_user" {
     first_name = "example"
     last_name  = "example"
     email      = "example@example.com"
-    suspended  = false
   }
 }
 
