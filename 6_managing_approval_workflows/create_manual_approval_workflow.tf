@@ -37,7 +37,6 @@ resource "sdm_account" "approver_user_manual_workflow" {
         first_name = "Test"
         last_name = "Approver"
         email = "test.approver@example.com"
-        suspended = false
     }
 }
 

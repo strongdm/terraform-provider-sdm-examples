@@ -25,7 +25,6 @@ resource "sdm_account" "windows_user" {
     first_name = "strongDM"
     last_name  = "Windows"
     email      = "user@email.com"
-    suspended  = false
   }
 }
 resource "sdm_account_attachment" "windows_user" {

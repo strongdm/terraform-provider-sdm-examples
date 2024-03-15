@@ -6,7 +6,6 @@ resource "sdm_account" "john" {
     first_name = "John"
     last_name  = "Doe"
     email      = "john@doe.com"
-    suspended  = false
   }
 }
 resource "sdm_account_attachment" "john_terraform" {

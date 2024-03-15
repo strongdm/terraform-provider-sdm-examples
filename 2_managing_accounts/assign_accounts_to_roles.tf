@@ -18,10 +18,9 @@
 #################
 resource "sdm_account" "example_user_2" {
   user {
-    first_name = "Example2"
-    last_name  = "Example2"
-    email      = "example2@example.com"
-    suspended  = false
+    first_name = "Example"
+    last_name  = "Example"
+    email      = "terraform-assign-accounts-example@example.com"
   }
 }
 
@@ -29,7 +28,7 @@ resource "sdm_account" "example_user_2" {
 # Create a Role with Access Rule
 ##################################
 resource "sdm_role" "example_role" {
-  name = "example-role"
+  name = "terraform-assign-accounts-example-role"
 }
 
 ###############################
