@@ -18,5 +18,6 @@
 ####################################
 provider "sdm" {
   # Using UK API host
+  # If the host is not configured, it will default to the US control plane (api.strongdm.com:443)
   host = "api.uk.strongdm.com:443"
 }
