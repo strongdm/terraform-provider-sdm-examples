@@ -21,3 +21,18 @@ provider "sdm" {
   # If the host is not configured, it will default to the US control plane (api.strongdm.com:443)
   host = "api.uk.strongdm.com:443"
 }
+
+####################################
+# Create a postgres datasource for example
+####################################
+resource "sdm_resource" "postgres_example" {
+  postgres {
+    name     = "Example Postgres Datasource"
+    hostname = "example.strongdm.com"
+    database = "example"
+    username = "example"
+    password = "example"
+    port     = 5432
+    tags     = { env = "dev" }
+  }
+}
