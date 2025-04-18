@@ -1,4 +1,4 @@
-# Copyright 2024 strongDM Inc
+# Copyright 2025 strongDM Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,22 +16,36 @@
 ####################################
 # Create a manual Approval Workflow 
 ####################################
+# Creates a manual approval workflow with approval steps in the order specified.
+# - quantifier specifies whether "any" or "all" the approvers specified need to grant approval for that approal step
+# - skip_after specifies a timeout after which the approval step will be auto-approved
+# - roles designated as approvers in each approval step allow users in that role to grant approval for that approval step
+# - users designated as approvers in each approval step allows that user to grant approval for that approval step
 resource "sdm_approval_workflow" "manual_approval_workflow" {
     name = "manual approval workflow example"
     approval_mode = "manual"
-}
-
-####################################
-# Create a manual Approval Workflow Step
-####################################
-resource "sdm_approval_workflow_step" "manual_approval_workflow_step" {
-    approval_flow_id = sdm_approval_workflow.manual_approval_workflow.id
+    approval_step {
+        quantifier = "any"
+        skip_after = "1h0m0s"
+        approvers {
+            account_id = sdm_account.approver_user_manual_workflow.id
+        }
+    }
+    approval_step {
+        quantifier = "all"
+        skip_after = "0s"
+        approvers {
+            role_id = sdm_role.approver_role_manual_workflow.id
+        }
+        approvers {
+            account_id = sdm_account.approver2_user_manual_workflow.id
+        }
+    }
 }
 
 ####################################
 # Create a User 
 ####################################
-# This user will be the approver of the manual Approval Workflow. 
 resource "sdm_account" "approver_user_manual_workflow" {
     user {
         first_name = "Test"
@@ -40,32 +54,17 @@ resource "sdm_account" "approver_user_manual_workflow" {
     }
 }
 
-####################################
-# Create an Approval Workflow Approver (account)
-####################################
-# Approval workflow approvers are the users or roles who can manually respond to a request.
-resource "sdm_approval_workflow_approver" "approval_workflow_approver_account_example" {
-    approval_flow_id = sdm_approval_workflow.manual_approval_workflow.id
-    approval_step_id = sdm_approval_workflow_step.manual_approval_workflow_step.id
-    account_id = sdm_account.approver_user_manual_workflow.id
+resource "sdm_account" "approver2_user_manual_workflow" {
+    user {
+        first_name = "Test2"
+        last_name = "Approver2"
+        email = "test.approver2@example.com"
+    }
 }
 
 ####################################
 # Create a Role 
 ####################################
-# This role will be the approver of the manual Approval Workflow. 
 resource "sdm_role" "approver_role_manual_workflow" {
   name = "example-role for manual workflow"
 }
-
-####################################
-# Create an Approval Workflow Approver (role)
-####################################
-# Approval workflow approvers are the users or roles who can manually respond to a request.
-resource "sdm_approval_workflow_approver" "approval_workflow_approver_account_example" {
-    approval_flow_id = sdm_approval_workflow.manual_approval_workflow.id
-    approval_step_id = sdm_approval_workflow_step.manual_approval_workflow_step.id
-    role_id = sdm_role.approver_role_manual_workflow.id
-}
-
-# At this point, the approval workflow will be created and a step with two approvers assigned.
