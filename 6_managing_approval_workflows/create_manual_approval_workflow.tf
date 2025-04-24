@@ -21,6 +21,7 @@
 # - skip_after specifies a timeout after which the approval step will be auto-approved
 # - roles designated as approvers in each approval step allow users in that role to grant approval for that approval step
 # - users designated as approvers in each approval step allows that user to grant approval for that approval step
+# - reference can be used to designate either the manager or the manager of the manager of the requester as an approver for that approval step
 resource "sdm_approval_workflow" "manual_approval_workflow" {
     name = "manual approval workflow example"
     approval_mode = "manual"
@@ -29,6 +30,9 @@ resource "sdm_approval_workflow" "manual_approval_workflow" {
         skip_after = "1h0m0s"
         approvers {
             account_id = sdm_account.approver_user_manual_workflow.id
+        }
+        approvers {
+            reference = "manager-of-requester"
         }
     }
     approval_step {
@@ -39,6 +43,9 @@ resource "sdm_approval_workflow" "manual_approval_workflow" {
         }
         approvers {
             account_id = sdm_account.approver2_user_manual_workflow.id
+        }
+        approvers {
+            reference = "manager-of-manager-of-requester"
         }
     }
 }
