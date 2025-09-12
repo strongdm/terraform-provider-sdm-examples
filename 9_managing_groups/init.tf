@@ -16,17 +16,28 @@
 terraform {
   required_providers {
     sdm = {
-      source = "strongdm/sdm"
+      version = "~> 15"
+      source  = "strongdm/sdm"
     }
   }
 }
 
 # StrongDM Provider Configuration
 # Two configuration modes are supported:
-# 1) Variables passed via command line, environment variables or another form of Terraform configuration
-# 2) Variables passed directly in the configuration
+#
+# Configuration Mode 1: Terraform variables (RECOMMENDED)
+# - Use this for production environments and CI/CD pipelines
+# - Variables can be provided via:
+#   * Environment variables: TF_VAR_sdm_api_access_key, TF_VAR_sdm_api_secret_key
+#   * Command line: -var="sdm_api_access_key=YOUR_KEY"
+#   * terraform.tfvars file (not recommended for secrets)
+#   * Variable files: -var-file="secret.tfvars"
+#
+# Configuration Mode 2: Direct hardcoded values (NOT RECOMMENDED)
+# - Only use for testing/debugging in secure environments
+# - Never commit API keys to version control
 
-# Configuration Mode 1: Terraform variables (preferred for production)
+# Configuration Mode 1: Terraform variables (RECOMMENDED)
 provider "sdm" {
   api_access_key = var.sdm_api_access_key
   api_secret_key = var.sdm_api_secret_key
@@ -45,8 +56,9 @@ variable "sdm_api_secret_key" {
 #   type = string
 # }
 
-# Configuration Mode 2: Direct configuration (mainly used for testing/debugging)
+# Configuration Mode 2: Direct hardcoded values (NOT RECOMMENDED)
+# WARNING: Only use this for local testing/debugging. Never commit real API keys!
 # provider "sdm" {
-#   api_access_key = "{{.AccessKey}}"
-#   api_secret_key = "{{.SecretKey}}"
+#   api_access_key = "your-access-key-here"
+#   api_secret_key = "your-secret-key-here"
 # }

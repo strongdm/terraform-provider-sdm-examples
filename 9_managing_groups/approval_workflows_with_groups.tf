@@ -13,6 +13,17 @@
 # limitations under the License.
 #
 
+# Groups-Focused Approval Workflow Example
+#
+# This example demonstrates how to use GROUPS as approvers in approval workflows.
+# For general approval workflow examples (including individual users, roles, etc.),
+# see the ../6_managing_approval_workflows directory.
+#
+# This example specifically showcases:
+# - Using groups as approvers in different approval steps
+# - Combining group approvers with manager references
+# - Different quantifier strategies with group-based approval
+
 ####################################
 # Create Approver Groups
 ####################################

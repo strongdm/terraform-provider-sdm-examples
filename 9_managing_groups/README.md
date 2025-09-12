@@ -13,8 +13,16 @@ This directory contains examples for managing groups and their relationships wit
 ### Group-Role Relationships
 - [`groups_roles.tf`](./groups_roles.tf) - Manage relationships between groups and roles
 
+### Complete User-to-Group-to-Role Example
+- [`user_group_role_complete.tf`](./user_group_role_complete.tf) - Complete example showing how users inherit access through group memberships
+
+### Data Source Examples
+- [`datasource_examples.tf`](./datasource_examples.tf) - Reference existing groups and roles using Terraform data sources
+
 ### Approval Workflows with Groups
 - [`approval_workflows_with_groups.tf`](./approval_workflows_with_groups.tf) - Create approval workflows using groups as approvers
+  
+  > **Note**: For general approval workflow examples (individual users, roles, etc.), see [`../6_managing_approval_workflows`](../6_managing_approval_workflows/)
 
 ## Prerequisites
 
