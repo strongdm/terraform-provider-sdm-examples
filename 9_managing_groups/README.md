@@ -1,110 +1,85 @@
-# Managing Groups with Terraform
+# Managing Groups
 
-This directory contains examples for managing groups and their relationships with accounts and roles using the StrongDM Terraform provider.
+This directory contains comprehensive CRUD examples for managing groups and their relationships with accounts and roles using the StrongDM Terraform provider.
 
 ## Examples
 
-### Basic Group Management
-- [`groups_basic.tf`](./groups_basic.tf) - Create basic groups
+### Groups CRUD
+[`groups_crud.tf`](./groups_crud.tf) - Complete CRUD operations for Groups
+- **Create**: Create new groups with various configurations
+- **Read**: List and query existing groups using data sources
+- Demonstrates group creation and querying patterns
+- Includes resource cleanup after demonstration
 
-### Account-Group Relationships  
-- [`accounts_groups.tf`](./accounts_groups.tf) - Manage relationships between accounts (users) and groups
+### AccountsGroups CRUD
+[`accounts_groups_crud.tf`](./accounts_groups_crud.tf) - Complete CRUD operations for AccountsGroups
+- **Create**: Link accounts (users) to groups
+- **Read**: List and query account-group relationships using data sources
+- Creates prerequisite accounts and groups
+- Shows account-group relationship management patterns
 
-### Group-Role Relationships
-- [`groups_roles.tf`](./groups_roles.tf) - Manage relationships between groups and roles
-
-### Complete User-to-Group-to-Role Example
-- [`user_group_role_complete.tf`](./user_group_role_complete.tf) - Complete example showing how users inherit access through group memberships
-
-### Data Source Examples
-- [`datasource_examples.tf`](./datasource_examples.tf) - Reference existing groups and roles using Terraform data sources
-
-### Approval Workflows with Groups
-- [`approval_workflows_with_groups.tf`](./approval_workflows_with_groups.tf) - Create approval workflows using groups as approvers
-  
-  > **Note**: For general approval workflow examples (individual users, roles, etc.), see [`../6_managing_approval_workflows`](../6_managing_approval_workflows/)
+### GroupsRoles CRUD
+[`groups_roles_crud.tf`](./groups_roles_crud.tf) - Complete CRUD operations for GroupsRoles
+- **Create**: Link groups to roles
+- **Read**: List and query group-role relationships using data sources
+- Creates prerequisite groups and roles
+- Shows group-role relationship management patterns
 
 ## Prerequisites
 
 1. **Terraform Installation**: [Install Terraform](https://www.terraform.io/downloads.html)
 2. **StrongDM API Keys**: Set the following environment variables:
    ```bash
-   export TF_VAR_sdm_api_access_key="your-access-key"
-   export TF_VAR_sdm_api_secret_key="your-secret-key"
+   export SDM_API_ACCESS_KEY="your-access-key"
+   export SDM_API_SECRET_KEY="your-secret-key"
    ```
 
 ## Usage
 
-### Initialize Terraform
+Each example can be run independently and demonstrates the complete CRUD lifecycle:
+
 ```bash
+# Groups CRUD example
+cd groups_crud
 terraform init
-```
+terraform plan
+terraform apply
 
-### Plan and Apply Examples
+# AccountsGroups CRUD example
+cd accounts_groups_crud
+terraform init
+terraform plan
+terraform apply
 
-#### Basic Groups
-```bash
-terraform plan -target=sdm_group.security_team -target=sdm_group.administrators -target=sdm_group.devops_team -target=sdm_group.qa_team
-terraform apply -target=sdm_group.security_team -target=sdm_group.administrators -target=sdm_group.devops_team -target=sdm_group.qa_team
-```
-
-#### Account-Group Relationships
-```bash
-terraform plan accounts_groups.tf
-terraform apply accounts_groups.tf
-```
-
-#### Group-Role Relationships  
-```bash
-terraform plan groups_roles.tf
-terraform apply groups_roles.tf
-```
-
-#### Approval Workflows with Groups
-```bash
-terraform plan approval_workflows_with_groups.tf
-terraform apply approval_workflows_with_groups.tf
-```
-
-### Apply All Examples
-```bash
+# GroupsRoles CRUD example
+cd groups_roles_crud
+terraform init
 terraform plan
 terraform apply
 ```
 
-## Key Features Demonstrated
+## Features
 
-### Groups as Approvers
-The approval workflow examples demonstrate how groups can be used as approvers in manual approval workflows:
-
-```hcl
-approval_step {
-  quantifier = "any"
-  skip_after = "2h0m0s"
-  approvers {
-    group_id = sdm_group.security_team.id
-  }
-}
-```
-
-### Mixed Approver Types
-Workflows can combine different types of approvers:
-- **Group approvers** (`group_id`)
-- **Individual account approvers** (`account_id`)
-- **Role approvers** (`role_id`)
-- **Reference approvers** (`reference`)
-
-### Flexible Group Membership
-Users can be members of multiple groups, and groups can have multiple roles assigned to them, providing flexible permission management.
+- **Complete CRUD Operations**: Each example demonstrates Create, Read operations for groups and relationships
+- **Comprehensive Resource Management**: Shows how to create accounts, groups, roles, and their relationships
+- **Data Source Integration**: Examples demonstrate querying existing resources using Terraform data sources
+- **Real-world Usage**: Examples show practical patterns for managing groups in production environments
+- **Resource Dependencies**: Examples that require prerequisite resources create them automatically
+- **Detailed Outputs**: All examples provide comprehensive output information for monitoring and validation
 
 ## Resource Types Used
 
 - `sdm_group` - Creates groups
-- `sdm_account_group` - Creates account-group relationships
-- `sdm_group_role` - Creates group-role relationships  
-- `sdm_approval_workflow` - Creates approval workflows with group approvers
 - `sdm_account` - Creates user accounts
+- `sdm_account_group` - Creates account-group relationships
 - `sdm_role` - Creates roles
+- `sdm_group_role` - Creates group-role relationships
+
+## Data Sources Used
+
+- `data.sdm_group` - Queries existing groups
+- `data.sdm_account_group` - Queries existing account-group relationships
+- `data.sdm_group_role` - Queries existing group-role relationships
 
 ## Clean Up
 
@@ -113,8 +88,26 @@ To remove all resources:
 terraform destroy
 ```
 
+## Terraform Validation
+
+To validate your Terraform configurations:
+
+```bash
+# Basic validation (run in each example directory)
+terraform init
+terraform validate
+terraform fmt
+terraform plan
+
+# Example: Validate groups_crud
+cd groups_crud
+terraform init
+terraform validate
+terraform plan
+```
+
 ## Further Reading
 
 - [StrongDM Terraform Provider Documentation](https://registry.terraform.io/providers/strongdm/sdm/latest/docs)
 - [Groups Feature Documentation](https://www.strongdm.com/docs)
-- [Approval Workflows Documentation](https://www.strongdm.com/docs)
+- [Terraform Best Practices](https://www.terraform.io/docs/cloud/guides/recommended-practices/index.html)
