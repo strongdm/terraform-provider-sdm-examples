@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     sdm = {
-      version = "~> 14.6"
+      version = "~> 15"
       source  = "strongdm/sdm"
     }
   }
