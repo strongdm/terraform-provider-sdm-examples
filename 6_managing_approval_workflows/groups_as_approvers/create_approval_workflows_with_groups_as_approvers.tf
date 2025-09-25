@@ -47,7 +47,7 @@ resource "sdm_account" "security_lead" {
     first_name = "Security"
     last_name  = "Lead"
     email      = "security.lead@example.com"
-    permission_level = "team-leader"
+    permission_level = "multi-team-leader"
   }
 }
 
