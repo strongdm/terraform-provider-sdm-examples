@@ -28,11 +28,19 @@ resource "sdm_resource" "redis-test-auto-workflow" {
 }
 
 ####################################
+# Create an automatic approval workflow
+####################################
+resource "sdm_approval_workflow" "auto_grant" {
+  name = "Auto Grant Example"
+  approval_mode = "automatic"
+}
+
+####################################
 # Create an auto grant Workflow 
 ####################################
 resource "sdm_workflow" "auto-grant-workflow" {
     name = "auto grant workflow example"
-    auto_grant = true
+    approval_flow_id = sdm_approval_workflow.auto_grant.id
     enabled = true
     access_rules = jsonencode([
     # Grant access to all Redis Datasources in us-east region
@@ -57,6 +65,6 @@ resource "sdm_role" "example-role-auto-grant-workflow" {
 # Workflow Roles are the roles that, when assigned to a workflow, grant access to this
 # workflow to the users who are also assigned the role.
 resource "sdm_workflow_role" "workflow-role-auto-grant-workflow" {
-  workflow_id = sdm_workflow.manual-approval-workflow.id
-  role_id = sdm_role.example-role-manual-workflow.id
+  workflow_id = sdm_workflow.auto-grant-workflow.id
+  role_id = sdm_role.example-role-auto-grant-workflow.id
 }

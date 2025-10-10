@@ -27,13 +27,29 @@ resource "sdm_resource" "redis-test-manual-workflow" {
   }
 }
 
+
+####################################
+# Create a manual approval approval flow 
+####################################
+resource "sdm_approval_workflow" "manual_approval" {
+  name = "Manual Approval Example"
+  approval_mode = "manual"
+  approval_step {
+    quantifier = "any"
+    skip_after = "2h0m0s"
+    approvers {
+      reference = "manager-of-requester"
+    }
+  }
+}
+
 ####################################
 # Create a manual approval Workflow 
 ####################################
 # This workflow will be disabled initially.
 resource "sdm_workflow" "manual-approval-workflow" {
     name = "manual approval workflow example"
-    auto_grant = false
+    approval_flow_id = sdm_approval_workflow.manual_approval.id
     access_rules = jsonencode([
     # Grant access to all Redis Datasources in us-east region
     {
