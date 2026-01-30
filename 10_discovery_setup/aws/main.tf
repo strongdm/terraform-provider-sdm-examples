@@ -4,7 +4,7 @@ terraform {
   required_providers {
     sdm = {
       source  = "strongdm/sdm"
-      version = "~> 15"
+      version = "~> 16"
     }
     aws = {
       source  = "hashicorp/aws"
@@ -60,10 +60,17 @@ resource "sdm_connector" "aws_discovery" {
 # Default provider - used when no alias is specified
 # Configure this for your primary/management account
 provider "aws" {
+  region = var.region
   # Authentication is typically handled via:
   # - AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables
   # - AWS CLI profile (~/.aws/credentials)
   # - IAM role (when running on EC2/ECS/Lambda)
+}
+
+provider "sdm" {
+  # Authentication is typically handled via:
+  # SDM_API_ACCESS_KEY and SDM_API_SECRET_KEY environment variables
+  # or through setting api_access_key and api_secret_key here
 }
 
 # Create IAM resources in the default account

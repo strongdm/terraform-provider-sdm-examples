@@ -8,8 +8,13 @@ variable "account_ids" {
   type        = list(string)
 }
 
+variable "region" {
+  description = "AWS Region for your AWS credentials"
+  type        = string
+}
+
 variable "services" {
-  description = "List of AWS services to scan. Valid values: RDS, EC2, EKS, Redshift, ElastiCache, DocumentDB"
+  description = "List of AWS services to scan. Currently supported services: RDS, EC2, EKS"
   type        = list(string)
   default     = ["RDS", "EC2", "EKS"]
 }
