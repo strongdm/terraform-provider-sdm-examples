@@ -4,7 +4,7 @@ terraform {
   required_providers {
     sdm = {
       source  = "strongdm/sdm"
-      version = "~> 15"
+      version = "~> 16"
     }
     azurerm = {
       source  = "hashicorp/azurerm"
@@ -19,9 +19,16 @@ terraform {
 
 provider "azurerm" {
   features {}
+  subscription_id = var.subscription_ids[0]
 }
 
 provider "azuread" {}
+
+provider "sdm" {
+  # Authentication is typically handled via:
+  # SDM_API_ACCESS_KEY and SDM_API_SECRET_KEY environment variables
+  # or through setting api_access_key and api_secret_key here
+}
 
 locals {
   issuer_url = "https://app.strongdm.com/oidc/${var.sdm_website_subdomain}"
@@ -45,6 +52,7 @@ resource "sdm_connector" "azure_discovery" {
     scan_period      = var.scan_period
     subscription_ids = var.subscription_ids
     client_id        = azuread_application.strongdm_discovery.client_id
+    tenant_id        = var.tenant_id
     services         = var.services
   }
 }
@@ -53,7 +61,7 @@ resource "sdm_connector" "azure_discovery" {
 # This allows StrongDM to authenticate using JWT tokens signed by its OIDC provider
 resource "azuread_application_federated_identity_credential" "strongdm_discovery" {
   application_id = azuread_application.strongdm_discovery.id
-  display_name   = "StrongDM Discovery Connector"
+  display_name   = "StrongDM-Discovery-Connector"
   description    = "Federated credential for StrongDM discovery scanner"
 
   issuer    = local.issuer_url

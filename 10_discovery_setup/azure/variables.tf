@@ -3,13 +3,18 @@ variable "sdm_website_subdomain" {
   type        = string
 }
 
+variable "tenant_id" {
+  description = "Azure tenant ID"
+  type        = string
+}
+
 variable "subscription_ids" {
   description = "List of Azure subscription IDs to scan for discoverable resources"
   type        = list(string)
 }
 
 variable "services" {
-  description = "List of Azure services to scan. Valid values: AKS, MySQL, PostgreSQL, SQLServer, VM, Redis"
+  description = "List of Azure services to scan. Currently supported: AzureVM, AzureSQL, AKS"
   type        = list(string)
   default     = ["AzureVM", "AzureSQL", "AKS"]
 }

@@ -36,6 +36,7 @@ This configuration creates:
 | Variable | Description |
 |----------|-------------|
 | `sdm_website_subdomain` | Your StrongDM organization's Web Domain from https://app.strongdm.com/app/settings/account |
+| `tenant_id` | Your Azure tenant ID |
 | `subscription_ids` | List of Azure subscription IDs to scan for discoverable resources |
 
 ## Optional Input Variables
@@ -104,7 +105,7 @@ sdm_website_subdomain = "your-org-subdomain"
 subscription_ids      = ["00000000-0000-0000-0000-000000000000"]
 
 # Optional overrides
-services         = ["AzureVM", "AzureSQL", "AKS", "AzurePostgreSQL"]
+services         = ["AzureVM", "AzureSQL", "AKS"]
 connector_name   = "my-azure-discovery"
 application_name = "StrongDM Discovery - Production"
 ```
