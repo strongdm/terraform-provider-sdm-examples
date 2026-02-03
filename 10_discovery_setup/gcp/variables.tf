@@ -9,7 +9,7 @@ variable "project_ids" {
 }
 
 variable "services" {
-  description = "List of GCP services to scan. Valid values: GKE, CloudSQL, ComputeEngine, AlloyDB, Memorystore"
+  description = "List of GCP services to scan. Currently supported: GKE, SQL, GCE"
   type        = list(string)
   default     = ["GKE", "SQL", "GCE"]
 }

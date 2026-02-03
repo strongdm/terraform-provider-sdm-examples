@@ -4,7 +4,7 @@ terraform {
   required_providers {
     sdm = {
       source  = "strongdm/sdm"
-      version = "~> 15"
+      version = "~> 16"
     }
     google = {
       source  = "hashicorp/google"
@@ -17,14 +17,22 @@ terraform {
   }
 }
 
-# The providers use the project from GOOGLE_PROJECT env var or gcloud config
+# The Google providers use the project from GOOGLE_PROJECT env var or gcloud config
 # The Workload Identity Pool is created in this project
-provider "google" {}
+provider "google" {
+}
 
-provider "google-beta" {}
+provider "google-beta" {
+}
 
 # Get the current project info (where Workload Identity Pool will be created)
 data "google_project" "identity" {}
+
+provider "sdm" {
+  # Authentication is typically handled via:
+  # SDM_API_ACCESS_KEY and SDM_API_SECRET_KEY environment variables
+  # or through setting api_access_key and api_secret_key here
+}
 
 locals {
   issuer_url = "https://app.strongdm.com/oidc/${var.sdm_website_subdomain}"
@@ -33,11 +41,15 @@ locals {
 # Create the StrongDM discovery connector for GCP
 resource "sdm_connector" "gcp_discovery" {
   gcp {
-    name        = var.connector_name
-    description = "Discovers resources across GCP projects: ${join(", ", var.project_ids)}"
-    scan_period = var.scan_period
-    project_ids = var.project_ids
-    services    = var.services
+    name                    = var.connector_name
+    description             = "Discovers resources across GCP projects: ${join(", ", var.project_ids)}"
+    scan_period             = var.scan_period
+    project_ids             = var.project_ids
+    services                = var.services
+    workload_project_number = data.google_project.identity.number
+    workload_project_id     = data.google_project.identity.project_id
+    workload_provider_id    = var.provider_id
+    workload_pool_id        = var.pool_id
   }
 }
 
