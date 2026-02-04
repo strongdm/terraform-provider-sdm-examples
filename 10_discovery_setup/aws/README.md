@@ -35,8 +35,8 @@ This configuration creates:
 
 | Variable | Description |
 |----------|-------------|
-| `sdm_website_subdomain` | Your StrongDM organization's Web Domain from https://app.strongdm.com/app/settings/account |
 | `account_ids` | List of AWS account IDs to scan for discoverable resources |
+| `region` | Region for your AWS credentials |
 
 ## Optional Input Variables
 
@@ -51,7 +51,7 @@ This configuration creates:
 
 ### StrongDM API Permissions
 
-The StrongDM API key needs permissions to create connectors.
+The StrongDM API key needs permissions to create connectors and to view organization settings 
 
 ### AWS IAM Permissions
 
@@ -100,7 +100,6 @@ aws configure --profile myprofile
 ### 2. Create terraform.tfvars
 
 ```hcl
-sdm_website_subdomain = "your-org-subdomain"
 account_ids           = ["123456789012", "234567890123"]
 
 # Optional overrides

@@ -1,8 +1,3 @@
-variable "sdm_website_subdomain" {
-  description = "Your StrongDM organization's website subdomain. This is the Web Domain from this page: https://app.strongdm.com/app/settings/account."
-  type        = string
-}
-
 variable "project_ids" {
   description = "List of GCP project IDs to scan for discoverable resources"
   type        = list(string)

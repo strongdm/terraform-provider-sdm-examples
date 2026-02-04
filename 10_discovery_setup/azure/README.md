@@ -35,7 +35,6 @@ This configuration creates:
 
 | Variable | Description |
 |----------|-------------|
-| `sdm_website_subdomain` | Your StrongDM organization's Web Domain from https://app.strongdm.com/app/settings/account |
 | `tenant_id` | Your Azure tenant ID |
 | `subscription_ids` | List of Azure subscription IDs to scan for discoverable resources |
 
@@ -52,7 +51,7 @@ This configuration creates:
 
 ### StrongDM API Permissions
 
-The StrongDM API key needs permissions to create connectors.
+The StrongDM API key needs permissions to create connectors and to view organization settings
 
 ### Azure AD Permissions
 
@@ -101,7 +100,7 @@ az account set --subscription "your-subscription-id"
 ### 2. Create terraform.tfvars
 
 ```hcl
-sdm_website_subdomain = "your-org-subdomain"
+tenant_id             = "00000000-0000-0000-0000-000000000000"
 subscription_ids      = ["00000000-0000-0000-0000-000000000000"]
 
 # Optional overrides

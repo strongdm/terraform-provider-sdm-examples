@@ -34,8 +34,7 @@ provider "sdm" {
   # or through setting api_access_key and api_secret_key here
 }
 
-locals {
-  issuer_url = "https://app.strongdm.com/oidc/${var.sdm_website_subdomain}"
+data "sdm_org_url_info" "org" {
 }
 
 # Create the StrongDM discovery connector for GCP
@@ -84,7 +83,7 @@ resource "google_iam_workload_identity_pool_provider" "sdm_oidc" {
   }
 
   oidc {
-    issuer_uri        = local.issuer_url
+    issuer_uri        = data.sdm_org_url_info.org.oidc_issuer_url
     allowed_audiences = ["sdm:${var.sdm_website_subdomain}"]
   }
 }

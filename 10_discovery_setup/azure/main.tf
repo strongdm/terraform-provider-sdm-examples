@@ -30,9 +30,9 @@ provider "sdm" {
   # or through setting api_access_key and api_secret_key here
 }
 
-locals {
-  issuer_url = "https://app.strongdm.com/oidc/${var.sdm_website_subdomain}"
+data "sdm_org_url_info" "org" {
 }
+
 
 # Create Azure AD Application for StrongDM Discovery
 resource "azuread_application" "strongdm_discovery" {
@@ -64,7 +64,7 @@ resource "azuread_application_federated_identity_credential" "strongdm_discovery
   display_name   = "StrongDM-Discovery-Connector"
   description    = "Federated credential for StrongDM discovery scanner"
 
-  issuer    = local.issuer_url
+  issuer    = data.sdm_org_url_info.org.oidc_issuer_url
   subject   = "sdm:${var.sdm_website_subdomain}:${sdm_connector.azure_discovery.id}"
   audiences = ["api://AzureADTokenExchange"]
 }

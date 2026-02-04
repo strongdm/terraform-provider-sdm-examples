@@ -5,7 +5,7 @@ output "connector_id" {
 
 output "issuer_url" {
   description = "The OIDC issuer URL used for federation"
-  value       = local.issuer_url
+  value       = data.sdm_org_url_info.org.oidc_issuer_url
 }
 
 output "workload_identity_pool_id" {

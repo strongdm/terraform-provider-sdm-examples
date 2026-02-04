@@ -13,8 +13,7 @@ terraform {
   }
 }
 
-locals {
-  issuer_url = "https://app.strongdm.com/oidc/${var.sdm_website_subdomain}"
+data "sdm_org_url_info" "org" {
 }
 
 # Create the StrongDM discovery connector for AWS
@@ -68,9 +67,7 @@ provider "aws" {
 }
 
 provider "sdm" {
-  # Authentication is typically handled via:
-  # SDM_API_ACCESS_KEY and SDM_API_SECRET_KEY environment variables
-  # or through setting api_access_key and api_secret_key here
+  # api_access_key and api_secret_key read from environment variables
 }
 
 # Create IAM resources in the default account
@@ -83,7 +80,7 @@ module "sdm_discovery_aws" {
   #   aws = aws.account_1
   # }
 
-  issuer_url    = local.issuer_url
+  issuer_url    = data.sdm_org_url_info.org.oidc_issuer_url
   connector_ids = toset([sdm_connector.aws_discovery.id])
   role_name     = var.role_name
 }

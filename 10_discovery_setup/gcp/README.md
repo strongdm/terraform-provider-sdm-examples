@@ -34,7 +34,6 @@ This configuration creates:
 
 | Variable | Description |
 |----------|-------------|
-| `sdm_website_subdomain` | Your StrongDM organization's Web Domain from https://app.strongdm.com/app/settings/account |
 | `project_ids` | List of GCP project IDs to scan for discoverable resources |
 
 ## Optional Input Variables
@@ -51,7 +50,7 @@ This configuration creates:
 
 ### StrongDM API Permissions
 
-The StrongDM API key needs permissions to create connectors.
+The StrongDM API key needs permissions to create connectors and to view organization settings
 
 ### GCP Permissions
 
@@ -112,7 +111,6 @@ export GOOGLE_APPLICATION_CREDENTIALS="/path/to/service-account-key.json"
 ### 2. Create terraform.tfvars
 
 ```hcl
-sdm_website_subdomain = "your-org-subdomain"
 project_ids           = ["project-1", "project-2"]
 
 # Optional overrides

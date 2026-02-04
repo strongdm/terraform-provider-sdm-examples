@@ -1,8 +1,3 @@
-variable "sdm_website_subdomain" {
-  description = "Your StrongDM organization's website subdomain. This is the Web Domain from this page: https://app.strongdm.com/app/settings/account."
-  type        = string
-}
-
 variable "tenant_id" {
   description = "Azure tenant ID"
   type        = string
