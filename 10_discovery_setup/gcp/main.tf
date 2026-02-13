@@ -14,6 +14,10 @@ terraform {
       source  = "hashicorp/google-beta"
       version = ">= 5.0.0"
     }
+    random = {
+      source  = "hashicorp/random"
+      version = ">= 3.0.0"
+    }
   }
 }
 
@@ -37,6 +41,17 @@ provider "sdm" {
 data "sdm_org_url_info" "org" {
 }
 
+# Random suffix to avoid conflicts with GCP's 30-day soft-delete retention
+# on Workload Identity Pools and Providers
+resource "random_id" "pool_suffix" {
+  byte_length = 4
+}
+
+locals {
+  pool_id     = "${var.pool_id}-${random_id.pool_suffix.hex}"
+  provider_id = "${var.provider_id}-${random_id.pool_suffix.hex}"
+}
+
 # Create the StrongDM discovery connector for GCP
 resource "sdm_connector" "gcp_discovery" {
   gcp {
@@ -47,8 +62,8 @@ resource "sdm_connector" "gcp_discovery" {
     services                = var.services
     workload_project_number = data.google_project.identity.number
     workload_project_id     = data.google_project.identity.project_id
-    workload_provider_id    = var.provider_id
-    workload_pool_id        = var.pool_id
+    workload_provider_id    = local.provider_id
+    workload_pool_id        = local.pool_id
   }
 }
 
@@ -60,7 +75,7 @@ locals {
 resource "google_iam_workload_identity_pool" "sdm" {
   provider                  = google-beta
   project                   = data.google_project.identity.project_id
-  workload_identity_pool_id = var.pool_id
+  workload_identity_pool_id = local.pool_id
 
   display_name = "StrongDM Discovery Pool"
   description  = "Workload Identity Pool for StrongDM discovery federation"
@@ -71,7 +86,7 @@ resource "google_iam_workload_identity_pool_provider" "sdm_oidc" {
   provider                           = google-beta
   project                            = data.google_project.identity.project_id
   workload_identity_pool_id          = google_iam_workload_identity_pool.sdm.workload_identity_pool_id
-  workload_identity_pool_provider_id = var.provider_id
+  workload_identity_pool_provider_id = local.provider_id
 
   display_name = "StrongDM Discovery OIDC Provider"
   description  = "OIDC provider for StrongDM discovery federation"
@@ -89,7 +104,7 @@ resource "google_iam_workload_identity_pool_provider" "sdm_oidc" {
 }
 
 locals {
-  pool_resource_name = "projects/${data.google_project.identity.number}/locations/global/workloadIdentityPools/${var.pool_id}"
+  pool_resource_name = "projects/${data.google_project.identity.number}/locations/global/workloadIdentityPools/${local.pool_id}"
   principal_subject  = "principal://iam.googleapis.com/${local.pool_resource_name}/subject/${local.subject}"
 }
 
