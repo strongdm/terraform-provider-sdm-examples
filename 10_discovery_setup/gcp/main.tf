@@ -68,7 +68,7 @@ resource "sdm_connector" "gcp_discovery" {
 }
 
 locals {
-  subject = "sdm:${var.sdm_website_subdomain}:${sdm_connector.gcp_discovery.id}"
+  subject = "sdm:${data.sdm_org_url_info.org.websites_subdomain}:${sdm_connector.gcp_discovery.id}"
 }
 
 # Create Workload Identity Pool for StrongDM federation
@@ -99,12 +99,12 @@ resource "google_iam_workload_identity_pool_provider" "sdm_oidc" {
 
   oidc {
     issuer_uri        = data.sdm_org_url_info.org.oidc_issuer_url
-    allowed_audiences = ["sdm:${var.sdm_website_subdomain}"]
+    allowed_audiences = ["sdm:${data.sdm_org_url_info.org.websites_subdomain}"]
   }
 }
 
 locals {
-  pool_resource_name = "projects/${data.google_project.identity.number}/locations/global/workloadIdentityPools/${local.pool_id}"
+  pool_resource_name = "projects/${data.google_project.identity.number}/locations/global/workloadIdentityPools/${google_iam_workload_identity_pool.sdm.workload_identity_pool_id}"
   principal_subject  = "principal://iam.googleapis.com/${local.pool_resource_name}/subject/${local.subject}"
 }
 

@@ -65,7 +65,7 @@ resource "azuread_application_federated_identity_credential" "strongdm_discovery
   description    = "Federated credential for StrongDM discovery scanner"
 
   issuer    = data.sdm_org_url_info.org.oidc_issuer_url
-  subject   = "sdm:${var.sdm_website_subdomain}:${sdm_connector.azure_discovery.id}"
+  subject   = "sdm:${data.sdm_org_url_info.org.websites_subdomain}:${sdm_connector.azure_discovery.id}"
   audiences = ["api://AzureADTokenExchange"]
 }
 
