@@ -18,13 +18,13 @@ variable "connector_name" {
 variable "pool_id" {
   description = "ID for the Workload Identity Pool"
   type        = string
-  default     = "strongdm-discovery-pool"
+  default     = "sdm-discovery-pool"
 }
 
 variable "provider_id" {
   description = "ID for the Workload Identity Pool Provider"
   type        = string
-  default     = "strongdm-discovery-provider"
+  default     = "sdm-discovery-provider"
 }
 
 variable "scan_period" {
